@@ -13,6 +13,7 @@ const Dashboard = () => {
     const [editingUser, setEditingUser] = useState(null);
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false)
+    const [isLoadingDelete, setIsLoadingDelete] = useState(null)
 
     // Fetch Users
     const fetchUsers = async () => {
@@ -68,12 +69,17 @@ const Dashboard = () => {
 
     // Delete User
     const deleteUser = async (id) => {
+        setIsLoadingDelete(id)
         try {
             await removeUser(id);
             setUsers(users.filter((user) => user.id !== id));
+            setIsLoadingDelete(null)
         } catch (error) {
             postErrorHandler(error);
             console.error("Error deleting user:", error);
+            setIsLoadingDelete(null)
+        }finally{
+            setIsLoadingDelete(null)
         }
     };
 
@@ -82,7 +88,7 @@ const Dashboard = () => {
         <div className="p-4 bg-gray-100 min-h-screen">
             <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">User Management Dashboard</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <UserTable users={users} onEdit={setEditingUser} onDelete={deleteUser} />
+                <UserTable users={users} onEdit={setEditingUser} onDelete={deleteUser} isLoadingDelete={isLoadingDelete} />
                 <UserForm
                     onSubmit={editingUser ? editUser : addUser}
                     editingUser={editingUser}

@@ -1,6 +1,6 @@
 import React from "react";
 
-function UserTable({ users, onEdit, onDelete }) {
+function UserTable({ users, onEdit, onDelete, isLoadingDelete }) {
     return (
         <div className="bg-white shadow rounded-lg p-4">
             <h2 className="text-xl font-semibold text-gray-700 mb-4">Users</h2>
@@ -30,10 +30,14 @@ function UserTable({ users, onEdit, onDelete }) {
                                         Edit
                                     </button>
                                     <button
-                                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                                        onClick={() => onDelete(user.id)}
+                                        className={`bg-red-500 text-white px-3 py-1 rounded ${isLoadingDelete === user.id
+                                                ? "cursor-not-allowed bg-red-300"
+                                                : "hover:bg-red-600"
+                                            }`}
+                                        onClick={() => !isLoadingDelete && onDelete(user.id)}
+                                        disabled={isLoadingDelete === user.id}
                                     >
-                                        Delete
+                                        {isLoadingDelete === user.id ? "Deleting..." : "Delete"}
                                     </button>
                                 </td>
                             </tr>
@@ -63,10 +67,14 @@ function UserTable({ users, onEdit, onDelete }) {
                                 Edit
                             </button>
                             <button
-                                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                                onClick={() => onDelete(user.id)}
+                                className={`bg-red-500 text-white px-3 py-1 rounded ${isLoadingDelete === user.id
+                                        ? "cursor-not-allowed bg-red-300"
+                                        : "hover:bg-red-600"
+                                    }`}
+                                onClick={() => !isLoadingDelete && onDelete(user.id)}
+                                disabled={isLoadingDelete === user.id}
                             >
-                                Delete
+                                {isLoadingDelete === user.id ? "Deleting..." : "Delete"}
                             </button>
                         </div>
                     </div>
