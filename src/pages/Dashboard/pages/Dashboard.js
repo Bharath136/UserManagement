@@ -68,17 +68,12 @@ const Dashboard = () => {
 
     // Delete User
     const deleteUser = async (id) => {
-        setIsLoading(true)
         try {
             await removeUser(id);
             setUsers(users.filter((user) => user.id !== id));
-            setIsLoading(false)
         } catch (error) {
             postErrorHandler(error);
             console.error("Error deleting user:", error);
-            setIsLoading(false)
-        }finally{
-            setIsLoading(false)
         }
     };
 
